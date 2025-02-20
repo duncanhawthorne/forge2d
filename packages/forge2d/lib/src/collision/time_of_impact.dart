@@ -284,8 +284,8 @@ class SeparationFunction {
       type = SeparationFunctionType.points;
       _localPointA.setFrom(proxyA.getVertex(cache.indexA[0]));
       _localPointB.setFrom(proxyB.getVertex(cache.indexB[0]));
-      _pointA.setFrom(Transform.mulVec2(_xfa, _localPointA));
-      _pointB.setFrom(Transform.mulVec2(_xfb, _localPointB));
+      Transform.mulVec2(_xfa, _localPointA, out: _pointA);
+      Transform.mulVec2(_xfb, _localPointB, out: _pointB);
       axis
         ..setFrom(_pointB)
         ..sub(_pointA);
@@ -303,16 +303,16 @@ class SeparationFunction {
       _temp.scaleOrthogonalInto(-1.0, axis);
       axis.normalize();
 
-      _normal.setFrom(Rot.mulVec2(_xfb.q, axis));
+      Rot.mulVec2(_xfb.q, axis, out: _normal);
 
       localPoint
         ..setFrom(_localPointB1)
         ..add(_localPointB2)
         ..scale(.5);
-      _pointB.setFrom(Transform.mulVec2(_xfb, localPoint));
+      Transform.mulVec2(_xfb, localPoint, out: _pointB);
 
       _localPointA.setFrom(proxyA.getVertex(cache.indexA[0]));
-      _pointA.setFrom(Transform.mulVec2(_xfa, _localPointA));
+      Transform.mulVec2(_xfa, _localPointA, out: _pointA);
 
       _temp
         ..setFrom(_pointA)
@@ -336,16 +336,16 @@ class SeparationFunction {
       _temp.scaleOrthogonalInto(-1.0, axis);
       axis.normalize();
 
-      _normal.setFrom(Rot.mulVec2(_xfa.q, axis));
+      Rot.mulVec2(_xfa.q, axis, out: _normal);
 
       localPoint
         ..setFrom(_localPointA1)
         ..add(_localPointA2)
         ..scale(.5);
-      _pointA.setFrom(Transform.mulVec2(_xfa, localPoint));
+      Transform.mulVec2(_xfa, localPoint, out: _pointA);
 
       _localPointB.setFrom(proxyB.getVertex(cache.indexB[0]));
-      _pointB.setFrom(Transform.mulVec2(_xfb, _localPointB));
+      Transform.mulVec2(_xfb, _localPointB, out: _pointB);
 
       _temp
         ..setFrom(_pointB)
@@ -369,8 +369,8 @@ class SeparationFunction {
 
     switch (type) {
       case SeparationFunctionType.points:
-        _axisA.setFrom(Rot.mulTransVec2(_xfa.q, axis));
-        _axisB.setFrom(Rot.mulTransVec2(_xfb.q, axis..negate()));
+        Rot.mulTransVec2(_xfa.q, axis, out: _axisA);
+        Rot.mulTransVec2(_xfb.q, axis..negate(), out: _axisB);
         axis.negate();
 
         indexes[0] = proxyA.getSupport(_axisA);
@@ -379,36 +379,36 @@ class SeparationFunction {
         _localPointA.setFrom(proxyA.getVertex(indexes[0]));
         _localPointB.setFrom(proxyB.getVertex(indexes[1]));
 
-        _pointA.setFrom(Transform.mulVec2(_xfa, _localPointA));
-        _pointB.setFrom(Transform.mulVec2(_xfb, _localPointB));
+        Transform.mulVec2(_xfa, _localPointA, out: _pointA);
+        Transform.mulVec2(_xfb, _localPointB, out: _pointB);
 
         return (_pointB..sub(_pointA)).dot(axis);
       case SeparationFunctionType.faceA:
-        _normal.setFrom(Rot.mulVec2(_xfa.q, axis));
-        _pointA.setFrom(Transform.mulVec2(_xfa, localPoint));
+        Rot.mulVec2(_xfa.q, axis, out: _normal);
+        Transform.mulVec2(_xfa, localPoint, out: _pointA);
 
-        _axisB.setFrom(Rot.mulTransVec2(_xfb.q, _normal..negate()));
+        Rot.mulTransVec2(_xfb.q, _normal..negate(), out: _axisB);
         _normal.negate();
 
         indexes[0] = -1;
         indexes[1] = proxyB.getSupport(_axisB);
 
         _localPointB.setFrom(proxyB.getVertex(indexes[1]));
-        _pointB.setFrom(Transform.mulVec2(_xfb, _localPointB));
+        Transform.mulVec2(_xfb, _localPointB, out: _pointB);
 
         return (_pointB..sub(_pointA)).dot(_normal);
       case SeparationFunctionType.faceB:
-        _normal.setFrom(Rot.mulVec2(_xfb.q, axis));
-        _pointB.setFrom(Transform.mulVec2(_xfb, localPoint));
+        Rot.mulVec2(_xfb.q, axis, out: _normal);
+        Transform.mulVec2(_xfb, localPoint, out: _pointB);
 
-        _axisA.setFrom(Rot.mulTransVec2(_xfa.q, _normal..negate()));
+        Rot.mulTransVec2(_xfa.q, _normal..negate(), out: _axisA);
         _normal.negate();
 
         indexes[1] = -1;
         indexes[0] = proxyA.getSupport(_axisA);
 
         _localPointA.setFrom(proxyA.getVertex(indexes[0]));
-        _pointA.setFrom(Transform.mulVec2(_xfa, _localPointA));
+        Transform.mulVec2(_xfa, _localPointA, out: _pointA);
 
         return (_pointA..sub(_pointB)).dot(_normal);
     }
@@ -423,23 +423,23 @@ class SeparationFunction {
         _localPointA.setFrom(proxyA.getVertex(indexA));
         _localPointB.setFrom(proxyB.getVertex(indexB));
 
-        _pointA.setFrom(Transform.mulVec2(_xfa, _localPointA));
-        _pointB.setFrom(Transform.mulVec2(_xfb, _localPointB));
+        Transform.mulVec2(_xfa, _localPointA, out: _pointA);
+        Transform.mulVec2(_xfb, _localPointB, out: _pointB);
 
         return (_pointB..sub(_pointA)).dot(axis);
       case SeparationFunctionType.faceA:
-        _normal.setFrom(Rot.mulVec2(_xfa.q, axis));
-        _pointA.setFrom(Transform.mulVec2(_xfa, localPoint));
+        Rot.mulVec2(_xfa.q, axis, out: _normal);
+        Transform.mulVec2(_xfa, localPoint, out: _pointA);
 
         _localPointB.setFrom(proxyB.getVertex(indexB));
-        _pointB.setFrom(Transform.mulVec2(_xfb, _localPointB));
+        Transform.mulVec2(_xfb, _localPointB, out: _pointB);
         return (_pointB..sub(_pointA)).dot(_normal);
       case SeparationFunctionType.faceB:
-        _normal.setFrom(Rot.mulVec2(_xfb.q, axis));
-        _pointB.setFrom(Transform.mulVec2(_xfb, localPoint));
+        Rot.mulVec2(_xfb.q, axis, out: _normal);
+        Transform.mulVec2(_xfb, localPoint, out: _pointB);
 
         _localPointA.setFrom(proxyA.getVertex(indexA));
-        _pointA.setFrom(Transform.mulVec2(_xfa, _localPointA));
+        Transform.mulVec2(_xfa, _localPointA, out: _pointA);
 
         return (_pointA..sub(_pointB)).dot(_normal);
     }

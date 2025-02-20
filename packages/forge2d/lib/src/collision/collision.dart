@@ -416,15 +416,15 @@ class Collision {
     final v1s = poly1.vertices;
     final v2s = poly2.vertices;
 
-    _xf.setFrom(Transform.mulTrans(xf2, xf1));
+    Transform.mulTrans(xf2, xf1, out: _xf);
     final xfq = _xf.q;
 
     var bestIndex = 0;
     var maxSeparation = -double.maxFinite;
     for (var i = 0; i < count1; i++) {
       // Get poly1 normal in frame2.
-      _n.setFrom(Rot.mulVec2(xfq, n1s[i]));
-      _v1.setFrom(Transform.mulVec2(_xf, v1s[i]));
+      Rot.mulVec2(xfq, n1s[i], out: _n);
+      Transform.mulVec2(_xf, v1s[i], out: _v1);
 
       // Find deepest point for normal i.
       var si = double.maxFinite;
@@ -605,8 +605,8 @@ class Collision {
     final normalx = 1.0 * _tangent.y;
     final normaly = -1.0 * _tangent.x;
 
-    _v11.setFrom(Transform.mulVec2(xf1, _v11));
-    _v12.setFrom(Transform.mulVec2(xf1, _v12));
+    Transform.mulVec2(xf1, _v11, out: _v11);
+    Transform.mulVec2(xf1, _v12, out: _v12);
 
     // Face offset
     final frontOffset = normalx * _v11.x + normaly * _v11.y;
@@ -690,8 +690,8 @@ class Collision {
 
     // Compute circle in frame of edge
     // Vec2 Q = MulT(xfA, Mul(xfB, circleB.p));
-    _temp.setFrom(Transform.mulVec2(xfB, circleB.position));
-    _q.setFrom(Transform.mulTransVec2(xfA, _temp));
+    Transform.mulVec2(xfB, circleB.position, out: _temp);
+    Transform.mulTransVec2(xfA, _temp, out: _q);
 
     final a = edgeA.vertex1;
     final b = edgeA.vertex2;
@@ -902,8 +902,8 @@ class EdgePolygonCollider {
     PolygonShape polygonB2,
     Transform xfB,
   ) {
-    xf.setFrom(Transform.mulTrans(xfA, xfB));
-    centroidB.setFrom(Transform.mulVec2(xf, polygonB2.centroid));
+    Transform.mulTrans(xfA, xfB, out: xf);
+    Transform.mulVec2(xf, polygonB2.centroid, out: centroidB);
 
     v0 = edgeA.vertex0;
     v1 = edgeA.vertex1;
@@ -1123,9 +1123,8 @@ class EdgePolygonCollider {
     // Get polygonB in frameA
     polygonB.count = polygonB2.vertices.length;
     for (var i = 0; i < polygonB2.vertices.length; ++i) {
-      polygonB.vertices[i]
-          .setFrom(Transform.mulVec2(xf, polygonB2.vertices[i]));
-      polygonB.normals[i].setFrom(Rot.mulVec2(xf.q, polygonB2.normals[i]));
+      Transform.mulVec2(xf, polygonB2.vertices[i], out: polygonB.vertices[i]);
+      Rot.mulVec2(xf.q, polygonB2.normals[i], out: polygonB.normals[i]);
     }
 
     radius = 2.0 * settings.polygonRadius;
@@ -1287,7 +1286,7 @@ class EdgePolygonCollider {
         final cp = manifold.points[pointCount];
 
         if (primaryAxis.type == EPAxisType.edgeA) {
-          cp.localPoint.setFrom(Transform.mulTransVec2(xf, _clipPoints2[i].v));
+          Transform.mulTransVec2(xf, _clipPoints2[i].v, out: cp.localPoint);
           cp.id.set(_clipPoints2[i].id);
         } else {
           cp.localPoint.setFrom(_clipPoints2[i].v);

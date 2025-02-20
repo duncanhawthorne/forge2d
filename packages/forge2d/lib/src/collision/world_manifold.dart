@@ -70,14 +70,14 @@ class WorldManifold {
         {
           final planePoint = _pool3;
 
-          normal.setFrom(Rot.mulVec2(xfA.q, manifold.localNormal));
-          planePoint.setFrom(Transform.mulVec2(xfA, manifold.localPoint));
+          Rot.mulVec2(xfA.q, manifold.localNormal, out: normal);
+          Transform.mulVec2(xfA, manifold.localPoint, out: planePoint);
 
           final clipPoint = _pool4;
 
           for (var i = 0; i < manifold.pointCount; i++) {
-            clipPoint
-                .setFrom(Transform.mulVec2(xfB, manifold.points[i].localPoint));
+            Transform.mulVec2(xfB, manifold.points[i].localPoint,
+                out: clipPoint);
 
             final scalar = radiusA -
                 ((clipPoint.x - planePoint.x) * normal.x +
@@ -97,14 +97,13 @@ class WorldManifold {
         break;
       case ManifoldType.faceB:
         final planePoint = _pool3;
-        normal.setFrom(Rot.mulVec2(xfB.q, manifold.localNormal));
-        planePoint.setFrom(Transform.mulVec2(xfB, manifold.localPoint));
+        Rot.mulVec2(xfB.q, manifold.localNormal, out: normal);
+        Transform.mulVec2(xfB, manifold.localPoint, out: planePoint);
 
         final clipPoint = _pool4;
 
         for (var i = 0; i < manifold.pointCount; i++) {
-          clipPoint
-              .setFrom(Transform.mulVec2(xfA, manifold.points[i].localPoint));
+          Transform.mulVec2(xfA, manifold.points[i].localPoint, out: clipPoint);
 
           final scalar = radiusB -
               ((clipPoint.x - planePoint.x) * normal.x +

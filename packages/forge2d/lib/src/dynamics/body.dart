@@ -242,7 +242,7 @@ class Body {
     transform.q.setAngle(angle);
     transform.p.setFrom(position);
 
-    sweep.c.setFrom(Transform.mulVec2(transform, sweep.localCenter));
+    Transform.mulVec2(transform, sweep.localCenter, out: sweep.c);
     sweep.a = angle;
 
     sweep.c0.setFrom(sweep.c);
@@ -435,7 +435,7 @@ class Body {
     // Move center of mass.
     final oldCenter = Vector2.copy(sweep.c);
     sweep.localCenter.setFrom(massData.center);
-    sweep.c0.setFrom(Transform.mulVec2(transform, sweep.localCenter));
+    Transform.mulVec2(transform, sweep.localCenter, out: sweep.c0);
     sweep.c.setFrom(sweep.c0);
 
     // Update center of mass velocity.
@@ -505,7 +505,7 @@ class Body {
     // Move center of mass.
     final oldCenter = Vector2.copy(sweep.c);
     sweep.localCenter.setFrom(localCenter);
-    sweep.c0.setFrom(Transform.mulVec2(transform, sweep.localCenter));
+    Transform.mulVec2(transform, sweep.localCenter, out: sweep.c0);
     sweep.c.setFrom(sweep.c0);
 
     // Update center of mass velocity.
@@ -776,7 +776,7 @@ class Body {
     sweep.c.setFrom(sweep.c0);
     sweep.a = sweep.a0;
     transform.q.setAngle(sweep.a);
-    transform.p.setFrom(Rot.mulVec2(transform.q, sweep.localCenter));
+    Rot.mulVec2(transform.q, sweep.localCenter, out: transform.p);
     (transform.p..scale(-1.0)).add(sweep.c);
   }
 
