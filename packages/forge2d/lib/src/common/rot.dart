@@ -60,11 +60,15 @@ class Rot {
           cos: q.cos * r.cos + q.sin * r.sin,
         );
 
-  static Vector2 mulVec2(Rot q, Vector2 v) {
-    return Vector2(q.cos * v.x - q.sin * v.y, q.sin * v.x + q.cos * v.y);
+  static Vector2 mulVec2(Rot q, Vector2 v, {Vector2? out}) {
+    final result = out ?? Vector2.zero();
+    return result
+      ..setValues(q.cos * v.x - q.sin * v.y, q.sin * v.x + q.cos * v.y);
   }
 
-  static Vector2 mulTransVec2(Rot q, Vector2 v) {
-    return Vector2(q.cos * v.x + q.sin * v.y, -q.sin * v.x + q.cos * v.y);
+  static Vector2 mulTransVec2(Rot q, Vector2 v, {Vector2? out}) {
+    final result = out ?? Vector2.zero();
+    return result
+      ..setValues(q.cos * v.x + q.sin * v.y, -q.sin * v.x + q.cos * v.y);
   }
 }
