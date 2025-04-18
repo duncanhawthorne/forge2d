@@ -77,7 +77,7 @@ class Transform {
       ..setFrom(b.p)
       ..sub(a.p);
     Rot.mulTransVec2(a.q, _reusableVector, out: _reusableVector);
-    final Transform result = out ?? Transform.zero();
+    final result = out ?? Transform.zero();
     return result
       ..p.setFrom(_reusableVector)
       ..q.setFrom(Rot.mulTrans(a.q, b.q));
