@@ -648,7 +648,8 @@ class Collision {
 
     var pointCount = 0;
     for (var i = 0; i < settings.maxManifoldPoints; ++i) {
-      final separation = normalx * _clipPoints2[i].v.x +
+      final separation =
+          normalx * _clipPoints2[i].v.x +
           normaly * _clipPoints2[i].v.y -
           frontOffset;
 

@@ -65,7 +65,6 @@ class WorldManifold {
           points[0].y = (cAy + cBy) * .5;
           separations[0] = (cBx - cAx) * normal.x + (cBy - cAy) * normal.y;
         }
-        break;
       case ManifoldType.faceA:
         {
           final planePoint = _pool3;
@@ -79,7 +78,8 @@ class WorldManifold {
             Transform.mulVec2(xfB, manifold.points[i].localPoint,
                 out: clipPoint);
 
-            final scalar = radiusA -
+            final scalar =
+                radiusA -
                 ((clipPoint.x - planePoint.x) * normal.x +
                     (clipPoint.y - planePoint.y) * normal.y);
 
@@ -94,7 +94,6 @@ class WorldManifold {
             separations[i] = (cBx - cAx) * normal.x + (cBy - cAy) * normal.y;
           }
         }
-        break;
       case ManifoldType.faceB:
         final planePoint = _pool3;
         Rot.mulVec2(xfB.q, manifold.localNormal, out: normal);
@@ -105,7 +104,8 @@ class WorldManifold {
         for (var i = 0; i < manifold.pointCount; i++) {
           Transform.mulVec2(xfA, manifold.points[i].localPoint, out: clipPoint);
 
-          final scalar = radiusB -
+          final scalar =
+              radiusB -
               ((clipPoint.x - planePoint.x) * normal.x +
                   (clipPoint.y - planePoint.y) * normal.y);
 
@@ -122,7 +122,6 @@ class WorldManifold {
         // Ensure normal points from A to B.
         normal.x = -normal.x;
         normal.y = -normal.y;
-        break;
     }
   }
 }
